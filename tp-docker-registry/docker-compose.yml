@@ -1,33 +1,9 @@
-version: '3.1'
+version: '3.8'
+
 services:
-  website:
-    container_name: student-website
-    image: php:apache
-    restart: always
-    depends_on:
-      - student-api
-    ports:
-      - "8080:80"
-    environment:
-      USERNAME: toto
-      PASSWORD: python
-    volumes:
-      - ./website:/var/www/html
-
-  student-api:
-    container_name: student-api
-    image: student-api:v1
-    restart: always
-    #ports:
-    #  - "5050:5000"
-    volumes:
-      - ./simple_api/student_age.json:/data/student_age.json
-
   registry-ui:
     image: joxit/docker-registry-ui:main
     restart: always
-    depends_on:
-      - registry-server
     ports:
       - 80:80
     environment:
@@ -47,8 +23,6 @@ services:
   registry-server:
     image: registry:2.8.2
     restart: always
-    ports:
-      - 5000:5000
     environment:
       REGISTRY_HTTP_HEADERS_Access-Control-Origin: '[http://registry.example.com]'
       REGISTRY_HTTP_HEADERS_Access-Control-Allow-Methods: '[HEAD,GET,OPTIONS,DELETE]'
@@ -59,6 +33,3 @@ services:
     volumes:
       - ./registry/data:/var/lib/registry
     container_name: registry-server
-
-networks:
-  mini-net:
